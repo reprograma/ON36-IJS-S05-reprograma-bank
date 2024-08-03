@@ -3,13 +3,14 @@ import { AccountType } from './account-type.enum';
 import { CheckingAccount, SavingsAccount } from './account.entity';
 import { Client } from '../clients/client.entity';
 
+const client = new Client('John', 'Rua caxias', '12345678900');
+
 /*
  * Jest:
  * describe, it/test
  */
 
 describe('Account Factory', () => {
-  const client = new Client('John', 'Rua caxias', '12345678900');
   test('should create a checking account', () => {
     const accountFactory = new AccountFactory();
     const retornado = accountFactory.createAccount(

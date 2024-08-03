@@ -15,6 +15,7 @@ export class AccountFactory {
         checkingAccount.balance = 0;
         checkingAccount.overdraftLimit = 500;
         checkingAccount.client = client;
+        checkingAccount.createdAt = new Date();
         checkingAccount.typeAccount = AccountType.Checking;
         return checkingAccount;
       case AccountType.Savings:
@@ -23,6 +24,7 @@ export class AccountFactory {
         savingsAccount.taxRate = 0.02;
         savingsAccount.typeAccount = AccountType.Savings;
         savingsAccount.client = client;
+        savingsAccount.createdAt = new Date();
         return savingsAccount;
       default:
         throw new Error('Invalid account type');

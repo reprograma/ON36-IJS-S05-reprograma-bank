@@ -12,6 +12,8 @@ export abstract class Account {
 
   client: Client;
 
+  createdAt: Date;
+
   getBalance(): number {
     return this.balance;
   }

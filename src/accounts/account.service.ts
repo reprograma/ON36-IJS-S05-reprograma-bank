@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AccountRepository } from './account.repository';
-import { TAccount } from './account.entity';
+import { CheckingAccount, SavingsAccount, TAccount } from './account.entity';
 import { AccountType } from './account-type.enum';
 import { AccountFactory } from './account.factory';
 import { Client } from '../clients/client.entity';
@@ -12,7 +12,10 @@ export class AccountService {
     private accountFactory: AccountFactory,
   ) {}
 
-  createAccount(type: AccountType, client: Client): TAccount {
+  createAccount(
+    type: AccountType,
+    client: Client,
+  ): CheckingAccount | SavingsAccount {
     const account = this.accountFactory.createAccount(type, client);
     return this.accountRepository.createAccount(account);
   }

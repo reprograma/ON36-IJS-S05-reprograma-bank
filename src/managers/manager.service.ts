@@ -37,11 +37,11 @@ export class ManagerService {
     this.managerRepository.removeManager(managerId);
   }
 
-  addClient(managerId: string, client: Client): Client {
-    const manager = this.managerRepository.findManagerById(managerId);
-    client.manager = manager;
-    return this.clientService.createClient(client);
-  }
+  // addClient(managerId: string, client: Client): Client {
+  //   const manager = this.managerRepository.findManagerById(managerId);
+  //   client.manager = manager;
+  //   return this.clientService.createClient(client);
+  // }
 
   removeClient(managerId: string, clientId: string): void {
     const client = this.clientService.getClientByIdAndManagerId(
@@ -55,12 +55,12 @@ export class ManagerService {
     return this.clientService.getClientsByManagerId(managerId);
   }
 
-  openAccount(
+  async openAccount(
     managerId: string,
     clientId: string,
     type: AccountType,
-  ): TAccount {
-    const client = this.clientService.getClientById(clientId);
+  ): Promise<TAccount> {
+    const client = await this.clientService.getClientById(clientId);
 
     const manager = this.managerRepository.findManagerById(managerId);
     client.manager = manager;

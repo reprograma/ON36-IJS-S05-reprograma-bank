@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test POST Request</title>
+</head>
+
+<body>
+    <form id="loginForm">
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            fetch('http://localhost:3000/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        email: email,
+                        password: password
+                    })
+                })
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+
+</html>

@@ -1,26 +1,73 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  BadRequestException,
+  Param,
+  Delete,
+  UseGuards,
+  Patch,
+  Req,
+} from '@nestjs/common';
 import { ClientService } from './client.service';
-import { CreateClientDto } from './client.dto';
+import { CreateClientDto, UpdateClientDto } from './client.dto';
 import { Client } from './client.entity';
-import { IClient } from './client.interface';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/enum/role.enum';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { Request } from 'express';
 
+//@UseInterceptors(LogInterceptor)
+// @UseGuards(AuthGuard, RoleGuard)
 @Controller('clients')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
   @Post()
-  createClient(@Body() createClientDto: CreateClientDto): Client {
-    const client: IClient = { ...createClientDto };
-    return this.clientService.createClient(client);
+  async createClient(
+    @Body() createClientDto: CreateClientDto,
+  ): Promise<Client> {
+    console.log('create cliente', createClientDto);
+    try {
+      // Chama o serviço para criar o cliente
+      return await this.clientService.createClient(createClientDto);
+    } catch (error) {
+      // Manipulação personalizada de erros, se necessário
+      throw new BadRequestException('Failed to create client');
+    }
   }
 
+  @Roles(Role.Manager)
   @Get()
-  getAllClients(): Client[] {
+  async getAllClients(): Promise<Client[]> {
     return this.clientService.getAllClients();
   }
 
-  @Get()
-  getClientById(id: string): Client {
+  @Get(':id')
+  async getClientById(@Param('id') id: string): Promise<Client | null> {
     return this.clientService.getClientById(id);
+  }
+
+
+  @Roles(Role.Client)
+  @Delete()
+  async removeClient(@Param('id') clientId: string): Promise<void> {
+    return this.clientService.removeClient(clientId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Roles(Role.Client)
+  @Patch()
+  async updateClient(
+    @Body() updateClientDto: UpdateClientDto,
+    @Req() req: Request,
+  ): Promise<Client> {
+    const userIdFromToken = req['user']?.id;
+
+    return await this.clientService.updateClient(
+      userIdFromToken,
+      updateClientDto,
+    );
   }
 }

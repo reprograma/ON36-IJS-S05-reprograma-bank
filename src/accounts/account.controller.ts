@@ -12,13 +12,14 @@ export class AccountController {
     private readonly clientService: ClientService,
   ) {}
 
-  @Post()
-  createAccount(
-    @Body('type') type: AccountType,
-    @Body('clientId') clientId: string,
-  ): CheckingAccount | SavingsAccount {
-    const client = this.clientService.getClientById(clientId);
-    const account = this.accountService.createAccount(type, client);
-    return account;
-  }
+  // @Post()
+  // createAccount(
+  //   @Body('type') type: AccountType,
+  //   @Body('clientId') clientId: string,
+  // ): CheckingAccount | SavingsAccount {
+  //   const client = this.clientService.getClientById(clientId);
+  //   const account = 1
+  //   //this.accountService.createAccount(type, client);
+  //   return account;
+  // }
 }

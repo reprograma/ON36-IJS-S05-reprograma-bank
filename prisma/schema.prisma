@@ -1,0 +1,51 @@
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
+// /// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+// model CreateClientDto {
+//   name        String
+//   address     String
+//   phoneNumber String
+
+//   @@ignore
+// }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Client {
+  id          String   @id @default(uuid())
+  name        String
+  address     String
+  phoneNumber String
+  email       String
+  password    String
+  role        Int       @default(1)
+  accounts    Account[]
+  manager     Manager? @relation(fields: [managerId], references: [id])
+  managerId   String?
+}
+
+model Account {
+  id        String   @id @default(uuid())
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id])
+}
+
+model Manager {
+  id       String   @id @default(uuid())
+  clients  Client[]
+}
+

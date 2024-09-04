@@ -1,7 +1,7 @@
 import { Client } from '../clients/client.entity';
 
 export class Manager {
-  id: string;
+  id?: string;
   name: string;
   clients: Client[];
 

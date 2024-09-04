@@ -5,10 +5,16 @@ import { AccountRepository } from './account.repository';
 import { AccountFactory } from './account.factory';
 import { CheckingAccount } from './account.entity';
 import { uuid } from 'uuidv4';
+import { Role } from 'src/enum/role.enum';
 
 jest.mock('uuidv4');
 
-const client = new Client('John', 'Rua balsas', '1122444566');
+const client = new Client('John',
+'Rua caxias',
+'12345678900',
+'teste@teste.com.br',
+'123456789',
+Role.Client,);
 const mockedDate = new Date(2000, 9, 1, 7);
 
 describe('Account Service', () => {
